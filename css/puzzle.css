@@ -255,7 +255,6 @@ body{
     .puzzle .container {
         top: 25%;
         padding: 10px;
-        position: absolute;
     }
     .puzzle .container .options {
         grid-template-columns: 1fr;
@@ -281,3 +280,4 @@ body{
     }
 }
 /* puzzle end */
+
