@@ -53,6 +53,8 @@ function showQuestion() {
     text.style.padding = '10px';
     text.style.lineHeight = '1.8';
     text.style.fontSize = '25px';
+    text.style.transition = '0.5s'
+
 
     // تفريغ القديم
     optionsparent.innerHTML = "";
@@ -143,4 +145,5 @@ function typingeffect(element, text , callback) {
         }
     }
     typing();
+
 }
