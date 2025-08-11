@@ -253,20 +253,22 @@ body{
 /* شاشات أقل من 480px (موبايل صغير) */
 @media (max-width: 480px) {
     .puzzle .container {
-        top: 25%;
+        top: 10%;
         padding: 10px;
+        position: absolute;
     }
     .puzzle .container .options {
         grid-template-columns: 1fr;
     }
     .puzzle .container .image img {
         width: 220px;
+        display: none;
     }
     .puzzle .container .content {
         margin-top: 100px;
     }
     .puzzle .container .content h2 {
-        font-size: 18px;
+        font-size: 26px;
     }
     .puzzle .button {
         padding: 6px 15px;
@@ -280,4 +282,3 @@ body{
     }
 }
 /* puzzle end */
-
