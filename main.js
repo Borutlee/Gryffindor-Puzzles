@@ -138,7 +138,7 @@ function typingeffect(element, text , callback) {
         if (x < text.length){
             element.textContent += text.charAt(x);
             x++;
-            setInterval(typing, 500);
+            setTimeout(typing, 50);
         }
         else if (callback){
             callback();
@@ -147,3 +147,4 @@ function typingeffect(element, text , callback) {
     typing();
 
 }
+
