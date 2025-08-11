@@ -7,6 +7,8 @@ let optionsparent = document.getElementsByClassName('options')[0];
 let changeQ = 0;
 let questionsData = []; // نخزن الأسئلة هنا
 
+// document.querySelector('.puzzle .container').style.position = 'absolute';
+
 function apiquestions() {
     fetch('puzzle.json')
     .then(response => response.json())
@@ -15,6 +17,7 @@ function apiquestions() {
         btn.addEventListener('click', () => {
             image.style.display = 'none';
             btn.style.display = 'none';
+            document.querySelector('.puzzle .container').style.position = 'relative';
             document.querySelector('.puzzle .container').style.flexDirection = 'column';
             showQuestion(); // عرض أول سؤال
         });
@@ -36,6 +39,7 @@ function showQuestion() {
     let puzzle = questionsData[changeQ];
     let options = puzzle.options;
 
+
     title.textContent = puzzle.title;
     document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(${puzzle.background})`;
 
@@ -54,7 +58,6 @@ function showQuestion() {
     text.style.lineHeight = '1.8';
     text.style.fontSize = '25px';
     text.style.transition = '0.5s'
-
 
     // تفريغ القديم
     optionsparent.innerHTML = "";
@@ -98,9 +101,9 @@ function showQuestion() {
                     if (changeQ < questionsData.length) {
                         showQuestion();
                     } else {
-                        text.textContent = "انتهت الأسئلة 🎉";
+                        text.textContent = "احسنت! الان قد تم تحريرك من الكتاب واصبحت ساحر حر!";
                         optionsparent.innerHTML = "";
-                        puzzle.style.backgroundImage = 'url(../media/)'
+                        puzzle.style.backgroundImage = 'url(../media/Great hall.png)'
                     }
                 }, 1000);
 
@@ -119,6 +122,8 @@ function showQuestion() {
                 });
                 setTimeout(() => {
                     span.style.color = 'black';
+                    changeQ = 0;
+                    showQuestion();
                 }, 1500);
             }
         });
@@ -145,6 +150,4 @@ function typingeffect(element, text , callback) {
         }
     }
     typing();
-
 }
-
