@@ -5,21 +5,19 @@ let text = document.querySelector('h2');
 let optionsparent = document.getElementsByClassName('options')[0];
 
 let changeQ = 0;
-let questionsData = []; // نخزن الأسئلة هنا
-
-// document.querySelector('.puzzle .container').style.position = 'absolute';
+let questionsData = [];
 
 function apiquestions() {
     fetch('puzzle.json')
     .then(response => response.json())
     .then(data => {
-        questionsData = data.puzzles; // نخزنهم في المصفوفة
+        questionsData = data.puzzles;
         btn.addEventListener('click', () => {
             image.style.display = 'none';
             btn.style.display = 'none';
             document.querySelector('.puzzle .container').style.position = 'relative';
             document.querySelector('.puzzle .container').style.flexDirection = 'column';
-            showQuestion(); // عرض أول سؤال
+            showQuestion();
         });
     });
 }
@@ -39,98 +37,100 @@ function showQuestion() {
     let puzzle = questionsData[changeQ];
     let options = puzzle.options;
 
-
     title.textContent = puzzle.title;
     document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(${puzzle.background})`;
 
-    // إعداد مظهر قائمة الاختيارات
     optionsparent.style.display = "grid";
     optionsparent.style.gap = "20px";
     optionsparent.style.marginTop = "20px";
     optionsparent.style.listStyle = "none";
     optionsparent.style.padding = "0";
-    updateGridColumns();  // ضبط أعمدة الشبكة حسب حجم الشاشة
+    updateGridColumns();
 
-    // عرض السؤال
-    typingeffect(text, puzzle.question);
     text.style.textAlign = 'center';
     text.style.padding = '10px';
     text.style.lineHeight = '1.8';
-    text.style.fontSize = '25px';
-    text.style.transition = '0.5s'
+    text.style.fontSize = '20px';
+    text.style.transition = '0.5s';
 
-    // تفريغ القديم
     optionsparent.innerHTML = "";
 
-    options.forEach(option => {
-        let li = document.createElement('li');
-        li.className = 'list';
-        li.style.listStyle = 'none';
-        li.style.background = 'linear-gradient(135deg, #b71c1c, #ffcc00)';
-        li.style.color = 'white';
-        li.style.fontSize = '1.2rem';
-        li.style.fontWeight = 'bold';
-        li.style.padding = '15px';
-        li.style.borderRadius = '50px';
-        li.style.textAlign = 'center';
-        li.style.cursor = 'pointer';
-        li.style.transition = '0.3s';
-        li.style.wordBreak = 'break-word'; // لتجنب خروج النص خارج العنصر
+    // كتابة السؤال ثم إظهار الاختيارات بالأنيميشن
+    typingeffect(text, puzzle.question, () => {
+        options.forEach((option, index) => {
+            let li = document.createElement('li');
+            li.className = 'list';
+            li.style.listStyle = 'none';
+            li.style.background = 'linear-gradient(135deg, #b71c1c, #ffcc00)';
+            li.style.color = 'white';
+            li.style.fontSize = '1.2rem';
+            li.style.fontWeight = 'bold';
+            li.style.padding = '15px';
+            li.style.borderRadius = '50px';
+            li.style.textAlign = 'center';
+            li.style.cursor = 'pointer';
+            li.style.wordBreak = 'break-word';
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(20px)';
+            li.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
 
-        let span = document.createElement('span');
-        span.className = 'span';
-        span.textContent = option;
+            let span = document.createElement('span');
+            span.className = 'span';
+            span.textContent = option;
 
-        li.appendChild(span);
-        optionsparent.appendChild(li);
+            li.appendChild(span);
+            optionsparent.appendChild(li);
 
-        li.addEventListener('click', () => {
-            if (span.textContent === puzzle.answer) {
-                // الإجابة الصحيحة
-                span.style.color = 'green';
-                document.querySelectorAll('.list').forEach(el => {
-                    if (el.textContent !== puzzle.answer) {
-                        el.style.pointerEvents = 'none';
-                        el.style.opacity = '0.5';
-                    }
-                });
+            // تأخير الظهور لكل اختيار
+            setTimeout(() => {
+                li.style.opacity = '1';
+                li.style.transform = 'translateY(0)';
+            }, index * 150);
 
-                // الانتقال للسؤال التالي بعد ثانية
-                setTimeout(() => {
-                    changeQ++;
-                    if (changeQ < questionsData.length) {
+            li.addEventListener('click', () => {
+                if (span.textContent === puzzle.answer) {
+                    span.style.color = 'green';
+                    document.querySelectorAll('.list').forEach(el => {
+                        if (el.textContent !== puzzle.answer) {
+                            el.style.pointerEvents = 'none';
+                            el.style.opacity = '0.5';
+                        }
+                    });
+
+                    setTimeout(() => {
+                        changeQ++;
+                        if (changeQ < questionsData.length) {
+                            showQuestion();
+                        } else {
+                            text.textContent = "احسنت! الان قد تم تحريرك من الكتاب واصبحت ساحر حر!";
+                            optionsparent.innerHTML = "";
+                            document.querySelector('.puzzle').style.backgroundImage = 'url(../media/Great hall.png)';
+                        }
+                    }, 1000);
+
+                } else {
+                    span.style.color = 'red';
+                    document.querySelectorAll('.list').forEach(el => {
+                        if (el !== li) {
+                            el.style.pointerEvents = 'none';
+                            el.style.opacity = '0.5';
+                            setTimeout(() => {                                    
+                                el.style.pointerEvents = 'auto';
+                                el.style.opacity = '1';
+                            }, 1200);
+                        }
+                    });
+                    setTimeout(() => {
+                        span.style.color = 'black';
+                        changeQ = 0;
                         showQuestion();
-                    } else {
-                        text.textContent = "احسنت! الان قد تم تحريرك من الكتاب واصبحت ساحر حر!";
-                        optionsparent.innerHTML = "";
-                        puzzle.style.backgroundImage = 'url(../media/Great hall.png)'
-                    }
-                }, 1000);
-
-            } else {
-                // الإجابة الغلط
-                span.style.color = 'red';
-                document.querySelectorAll('.list').forEach(el => {
-                    if (el !== li) {
-                        el.style.pointerEvents = 'none';
-                        el.style.opacity = '0.5';
-                        setTimeout(() => {                                    
-                            el.style.pointerEvents = 'auto';
-                            el.style.opacity = '1';
-                        }, 1200);
-                    }
-                });
-                setTimeout(() => {
-                    span.style.color = 'black';
-                    changeQ = 0;
-                    showQuestion();
-                }, 1500);
-            }
+                    }, 1500);
+                }
+            });
         });
     });
 }
 
-// ضبط الأعمدة عند تغيير حجم النافذة
 window.addEventListener('resize', updateGridColumns);
 
 apiquestions();
