@@ -48,7 +48,7 @@ function showQuestion() {
     updateGridColumns();  // ضبط أعمدة الشبكة حسب حجم الشاشة
 
     // عرض السؤال
-    text.textContent = puzzle.question;
+    typingeffect(text, puzzle.question);
     text.style.textAlign = 'center';
     text.style.padding = '10px';
     text.style.lineHeight = '1.8';
@@ -98,6 +98,7 @@ function showQuestion() {
                     } else {
                         text.textContent = "انتهت الأسئلة 🎉";
                         optionsparent.innerHTML = "";
+                        puzzle.style.backgroundImage = 'url(../media/)'
                     }
                 }, 1000);
 
@@ -126,3 +127,20 @@ function showQuestion() {
 window.addEventListener('resize', updateGridColumns);
 
 apiquestions();
+
+function typingeffect(element, text , callback) {
+    let x = 0;
+    element.textContent = '';
+
+    function typing(){
+        if (x < text.length){
+            element.textContent += text.charAt(x);
+            x++;
+            setInterval(typing, 500);
+        }
+        else if (callback){
+            callback();
+        }
+    }
+    typing();
+}
