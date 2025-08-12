@@ -204,39 +204,3 @@ function showCredits() {
 }
 
 
-function showInterlude(textContent, nextStep) {
-    text.style.whiteSpace = "pre-line";
-    text.style.textAlign = "center";
-    text.style.fontSize = "1.2em";
-    text.style.color = "white";
-    text.textContent = "";
-
-    optionsparent.innerHTML = "";
-
-    // إنشاء زرار استمر
-    let continueBtn = document.createElement('button');
-    continueBtn.textContent = "استمر";
-    continueBtn.className = "button"; // نفس شكل زرار البدء
-    continueBtn.style.display = "none"; // يظهر بعد ما الكتابة تخلص
-
-    document.querySelector('.puzzle .container').appendChild(continueBtn);
-
-    // كتابة النص بالتايب إفكت
-    let i = 0;
-    function typeNextChar() {
-        if (i < textContent.length) {
-            text.textContent += textContent.charAt(i);
-            i++;
-            setTimeout(typeNextChar, 40);
-        } else {
-            continueBtn.style.display = "block";
-        }
-    }
-    typeNextChar();
-
-    // لما يدوس على استمر
-    continueBtn.onclick = () => {
-        continueBtn.remove();
-        nextStep();
-    };
-}
