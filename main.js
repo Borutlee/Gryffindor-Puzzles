@@ -105,7 +105,7 @@ function showQuestion() {
                         if (changeQ < questionsData.length) {
                             showQuestion();
                         } else {
-                            showCredits();
+                            showCredits()
                             document.querySelector('.puzzle').style.backgroundImage = 'url(../media/Great hall.png)';
                         }
                     }, 1000);
@@ -202,5 +202,3 @@ function showCredits() {
     optionsparent.innerHTML = "";
     document.querySelector('.puzzle').style.backgroundImage = 'url(media/image4.png)';
 }
-
-
