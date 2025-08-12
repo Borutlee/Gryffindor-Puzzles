@@ -41,7 +41,7 @@ function showQuestion() {
     let options = puzzle.options;
 
     title.textContent = puzzle.title;
-    document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(../media/image${changeQ}.png)`;
+    document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(media/image${changeQ}.png)`;
 
     optionsparent.style.display = "grid";
     optionsparent.style.gap = "20px";
@@ -202,3 +202,4 @@ function showCredits() {
     optionsparent.innerHTML = "";
     document.querySelector('.puzzle').style.backgroundImage = 'url(media/image4.png)';
 }
+
