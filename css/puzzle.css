@@ -197,6 +197,45 @@ body{
     animation: fadeSlideUp 0.4s ease forwards;
 }
 
+
+/* الشكل الافتراضي على الشاشات الكبيرة */
+.credits-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 30px;
+    text-align: center;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    height: 70vh;
+    align-items: center;
+}
+
+.participants-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* على الشاشات المتوسطة */
+@media (max-width: 992px) {
+    .credits-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .participants-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* على الشاشات الصغيرة جدا */
+@media (max-width: 480px) {
+    .participants-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 /* ========== Responsive Design ========== */
 
 /* شاشات أقل من 1024px (تابلت وأجهزة صغيرة) */

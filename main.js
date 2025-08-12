@@ -7,6 +7,8 @@ let optionsparent = document.getElementsByClassName('options')[0];
 let changeQ = 0;
 let questionsData = [];
 
+let music = document.getElementById('music');
+
 function apiquestions() {
     fetch('puzzle.json')
     .then(response => response.json())
@@ -15,6 +17,7 @@ function apiquestions() {
         btn.addEventListener('click', () => {
             image.style.display = 'none';
             btn.style.display = 'none';
+            music.play()
             document.querySelector('.puzzle .container').style.position = 'relative';
             document.querySelector('.puzzle .container').style.flexDirection = 'column';
             showQuestion();
@@ -38,7 +41,7 @@ function showQuestion() {
     let options = puzzle.options;
 
     title.textContent = puzzle.title;
-    document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(${puzzle.background})`;
+    document.getElementsByClassName('puzzle')[0].style.backgroundImage  = `url(../media/image${changeQ}.png)`;
 
     optionsparent.style.display = "grid";
     optionsparent.style.gap = "20px";
@@ -102,8 +105,7 @@ function showQuestion() {
                         if (changeQ < questionsData.length) {
                             showQuestion();
                         } else {
-                            text.textContent = "احسنت! الان قد تم تحريرك من الكتاب واصبحت ساحر حر!";
-                            optionsparent.innerHTML = "";
+                            showCredits();
                             document.querySelector('.puzzle').style.backgroundImage = 'url(../media/Great hall.png)';
                         }
                     }, 1000);
@@ -150,4 +152,91 @@ function typingeffect(element, text , callback) {
         }
     }
     typing();
+}
+function showCredits() {
+    let creditsText = `
+🎉 أحسنت! لقد تم تحريرك من الكتاب وأصبحت ساحرًا حرًا!
+لقد انتصرت على الأشرار وحققت النصر 🏆
+
+👑 Supervisor
+🪄 Dianna R. Nott
+
+🤝 Participants
+🪄 Anderson R. Nott
+🪄 Albanus Shireveil
+🪄 Albus S. Weasley
+🪄 Amelia Bones
+🪄 Drexel Knox
+🪄 Zoro Miyamoto
+🪄 Phoenix Salvatore
+🪄 Chris C. Black
+🪄 Elssa S. Weasley
+🪄 Sesilia Verena
+🪄 Sylvara Nox
+🪄 Armin William
+🪄 Mira Kai
+🪄 Lina Thomas
+🪄 Leona Darnfire
+🪄 Selene Ndayla
+
+💻 Programmer
+🪄 borutlee
+`;
+
+    text.style.whiteSpace = "pre-line";
+    text.style.textAlign = "center";
+    text.style.fontSize = "1.2em";
+    text.style.color = "white";
+    text.textContent = "";
+
+    let i = 0;
+    function typeNextChar() {
+        if (i < creditsText.length) {
+            text.textContent += creditsText.charAt(i);
+            i++;
+            setTimeout(typeNextChar, 40); // سرعة الكتابة
+        }
+    }
+    typeNextChar();
+
+    optionsparent.innerHTML = "";
+    document.querySelector('.puzzle').style.backgroundImage = 'url(media/image4.png)';
+}
+
+
+function showInterlude(textContent, nextStep) {
+    text.style.whiteSpace = "pre-line";
+    text.style.textAlign = "center";
+    text.style.fontSize = "1.2em";
+    text.style.color = "white";
+    text.textContent = "";
+
+    optionsparent.innerHTML = "";
+
+    // إنشاء زرار استمر
+    let continueBtn = document.createElement('button');
+    continueBtn.textContent = "استمر";
+    continueBtn.className = "button"; // نفس شكل زرار البدء
+    continueBtn.style.display = "none"; // يظهر بعد ما الكتابة تخلص
+
+    document.querySelector('.puzzle .container').appendChild(continueBtn);
+
+    // كتابة النص بالتايب إفكت
+    let i = 0;
+    function typeNextChar() {
+        if (i < textContent.length) {
+            text.textContent += textContent.charAt(i);
+            i++;
+            setTimeout(typeNextChar, 40);
+        } else {
+            continueBtn.style.display = "block";
+        }
+    }
+    typeNextChar();
+
+    // لما يدوس على استمر
+    continueBtn.onclick = () => {
+        continueBtn.remove();
+        nextStep();
+    };
 }
